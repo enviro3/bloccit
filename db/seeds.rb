@@ -18,12 +18,16 @@ posts = Post.all
 100.times do
   Comment.create!(
 
-#-we call sample to pick a random post. Sample returns a 
+#-we call sample to pick a random post. Sample returns a
 # random element from an array every time it's called
     post: posts.sample,
     body: RandomData.random_paragraph
   )
 end
+
+puts "Start"
+Post.find_or_create_by(title: "Medieval Times", body: "Food was heavily spiced during the 14th century")
+puts "Finish"
 
 puts "Seed finished"
 puts "#{Post.count} posts created"
