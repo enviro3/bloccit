@@ -1,14 +1,10 @@
 Rails.application.routes.draw do
-  get 'welcome/index'
 
-  get 'welcome/about'
+  #refactoring with the resources method. Call resources method and pass it a Symbol
+  resources :posts
 
-  get 'welcome/contact'
-
-  get 'welcome/faq'
+  get 'about' => 'welcome#about'
 
   root 'welcome#index'
-
-
 
 end
