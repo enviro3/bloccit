@@ -25,6 +25,16 @@ posts = Post.all
   )
 end
 
+#Create Questions
+100.times do
+  Question.create!(
+    title: RandomData.random_sentence,
+    body: RandomData.random_paragraph,
+    resolved: false
+  )
+end
+
+
 puts "Start"
 Post.find_or_create_by(title: "Medieval Times", body: "Food was heavily spiced during the 14th century")
 puts "Finish"
@@ -32,3 +42,4 @@ puts "Finish"
 puts "Seed finished"
 puts "#{Post.count} posts created"
 puts "#{Comment.count} comments created"
+puts "#{Question.count} questions created"
