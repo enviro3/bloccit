@@ -5,6 +5,10 @@ Rails.application.routes.draw do
     resources :posts, expect: [:index]
   end
 
+  resources :topics do
+    resources :sponsored_posts, expect: [:index]
+  end
+
   get 'about' => 'welcome#about'
 
   root 'welcome#index'
