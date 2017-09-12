@@ -17,22 +17,29 @@ RSpec.describe User, type: :model do
    it { is_expected.to have_secure_password }
    it { is_expected.to validate_length_of(:password).is_at_least(6) }
 
+   #end
    describe "invalid user" do
-        let(:user_with_invalid_name) { User.new(name: "", email: "user@bloccit.com") }
-        let(:user_with_invalid_email) { User.new(name: "Bloccit User", email: "") }
+      let(:user_with_invalid_name) { User.new(name: "", email: "user@bloccit.com") }
+      let(:user_with_invalid_email) { User.new(name: "Bloccit User", email: "") }
 
-        it "should be an invalid user due to blank name" do
-          expect(user_with_invalid_name).to_not be_valid
-        end
+      it "should be an invalid user due to blank name" do
+        expect(user_with_invalid_name).to_not be_valid
+      end
 
-        it "should be an invalid user due to blank email" do
-          expect(user_with_invalid_email).to_not be_valid
-        end
-
+      it "should be an invalid user due to blank email" do
+        expect(user_with_invalid_email).to_not be_valid
+      end
    end
+
    describe "attributes" do
      it "should have name and email attributes" do
        expect(user).to have_attributes(name: "Bloccit User", email: "user@bloccit.com")
+     end
+
+     it "should update user's name to have caps" do
+        user.name = "first last"
+        user.save
+        expect(user.name).to eq "First Last"
      end
    end
 end
