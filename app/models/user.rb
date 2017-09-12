@@ -14,8 +14,6 @@ class User < ActiveRecord::Base
    has_secure_password
 
    def update_name
-     print name
-     print "foobar"
      if name
        array_with_name = []
        name.split.each do |name_section|
