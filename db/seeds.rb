@@ -11,9 +11,6 @@ require 'random_data'
 end
 users = User.all
 
-
-
-
 # Create Topics
 15.times do
   Topic.create!(
@@ -49,10 +46,19 @@ posts = Post.all
   )
 end
 
-user = User.first
-user.update_attributes!(
-  email: 'cvurlumis@gmail.com',
-  password: 'helloworld'
+# Create an admin user
+admin = User.create!(
+  name:     'Khaleesi',
+  email:    'khaleesi@targaryen.com',
+  password: 'motherofdragons',
+  role:     'admin'
+)
+
+# Create a member
+member = User.create!(
+  name:     'Random Name',
+  email:    'random@hotmail.com',
+  password: 'hopethisworks!'
 )
 
 puts "Start"
