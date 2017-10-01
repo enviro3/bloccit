@@ -61,6 +61,13 @@ member = User.create!(
   password: 'hopethisworks!'
 )
 
+# Create a moderator
+member = User.create!(
+  name:     'The Mod'
+  email:    'mod@HVZ.mudd'
+  password: 'brains'
+)
+
 puts "Start"
 Post.find_or_create_by(title: "Medieval Times", body: "Food was heavily spiced during the 14th century")
 puts "Finish"
