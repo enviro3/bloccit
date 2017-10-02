@@ -41,6 +41,8 @@ posts = Post.all
 
 #-we call sample to pick a random post. Sample returns a
 # random element from an array every time it's called
+
+    user: users.sample,
     post: posts.sample,
     body: RandomData.random_paragraph
   )
