@@ -4,6 +4,7 @@ include SessionsHelper
 
 RSpec.describe PostsController, type: :controller do
   let(:my_user) { User.create!(name: "Bloccit User", email: "user@bloccit.com", password: "helloworld") }
+  let(:my_moderator)  { User.create!(name: "Bloccit User", email: "user2@bloccit.com", password: "helloworld", role: "moderator") }
   let(:my_topic) { Topic.create!(name:  RandomData.random_sentence, description: RandomData.random_paragraph) }
   let(:my_post) { my_topic.posts.create!(title: RandomData.random_sentence, body: RandomData.random_paragraph, user: my_user) }
 
@@ -180,42 +181,30 @@ RSpec.describe PostsController, type: :controller do
 
   context "moderator user" do
     before do
-      user = User.create!(name: "Bloccit User", email: "user@bloccit.com", password: "helloworld", role: :moderator)
-      create_session(user)
-    end
-    describe "GET index" do
-      it "returns http success" do
-        get :index
-        expect(response).to have_http_status(:success)
-      end
-
-      it "assigns Post.all to post" do
-        get :index
-        expect(assigns(:posts)).to eq([my_post])
-      end
+      create_session(my_moderator)
     end
 
     describe "GET show" do
       it "returns http success" do
-        get :show, {id: my_post.id}
+        get :show, topic_id: my_topic.id, id: my_post.id
         expect(response).to have_http_status(:success)
       end
 
       it "renders the #show view" do
-        get :show, {id: my_post.id}
+        get :show, topic_id: my_topic.id, id: my_post.id
         expect(response).to render_template :show
       end
 
       it "assigns my_post to @post" do
-        get :show, {id: my_post.id}
+        get :show, topic_id: my_topic.id, id: my_post.id
         expect(assigns(:post)).to eq(my_post)
       end
     end
 
     describe "GET new" do
       it "returns http success" do
-        get :new
-        expect(response).to redirect_to post_path
+        get :new, topic_id: my_topic.id
+        expect(response).to have_http_status(:success)
       end
     end
 
@@ -227,17 +216,17 @@ RSpec.describe PostsController, type: :controller do
 
     describe "GET edit" do
       it "returns http success" do
-        get :edit, {id: my_post.id}
+        get :edit, topic_id: my_topic.id, id: my_post.id
         expect(response).to have_http_status(:success)
       end
 
       it "renders the #edit view" do
-        get :edit, {id: my_post.id}
+        get :edit, topic_id: my_topic.id, id: my_post.id
         expect(response).to render_template :edit
       end
 
       it "assigns post to be updated to @post" do
-        get :edit, {id: my_post.id}
+        get :edit, topic_id: my_topic.id, id: my_post.id
         topic_instance = assigns(:post)
 
         expect(post_instance.id).to eq my_post.id
@@ -270,13 +259,13 @@ RSpec.describe PostsController, type: :controller do
 
     describe "DELETE destroy" do
       it "deletes the topic" do
-        delete :destroy, {id: my_post.id}
+        delete :destroy, topic_id: my_topic.id, id: my_post.id
         count = Post.where({id: my_post.id}).size
         expect(count).to eq 0
       end
 
       it "redirects to posts index" do
-        delete :destroy, {id: my_post.id}
+        delete :destroy, topic_id: my_topic.id, id: my_post.id
         expect(response).to redirect_to post_path
       end
     end

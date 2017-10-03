@@ -62,10 +62,11 @@ member = User.create!(
 )
 
 # Create a moderator
-member = User.create!(
-  name:     'The Mod'
-  email:    'mod@HVZ.mudd'
-  password: 'brains'
+moderator = User.create!(
+  name:     'The Mod',
+  email:    'mod@HVZ.mudd',
+  password: 'brains',
+  role:     'moderator'
 )
 
 puts "Start"

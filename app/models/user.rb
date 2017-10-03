@@ -10,9 +10,9 @@ class User < ActiveRecord::Base
   validates :password, length: { minimum: 6 }, allow_blank: true
 
   validates :email,
-           presence: true,
-           uniqueness: { case_sensitive: false },
-           length: { minimum: 3, maximum: 254 }
+  presence: true,
+  uniqueness: { case_sensitive: false },
+  length: { minimum: 3, maximum: 254 }
 
   has_secure_password
 

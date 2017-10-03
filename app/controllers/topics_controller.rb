@@ -2,7 +2,7 @@ class TopicsController < ApplicationController
 
   before_action :require_sign_in, except: [:index, :show] #redirects guest users who try to access index or show actions
   before_action :authorize_user, except: [:index, :show] #check if admin, if not redirect to index
-  before_action :authorize_moderator, expect: [:index, :show] #check if moderator, if not redirect to index
+  #before_action :authorize_moderator, except: [:index, :show] #check if moderator, if not redirect to index
 
   def index
     @topics = Topic.all

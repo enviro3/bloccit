@@ -1,8 +1,8 @@
 class PostsController < ApplicationController
 
   before_action :require_sign_in, except: :show
-  before_action :authorize_user, except: [:show, :new, :create]
-  before_action :authorize_moderator, expect: [:index, :show]
+  before_action :authorize_user, except: [:show, :new, :create, :edit]
+  before_action :authorize_user_or_is_moderator, only: [ :edit]
 
   def show
     @post = Post.find(params[:id])
@@ -14,17 +14,17 @@ class PostsController < ApplicationController
   end
 
   def create
-     @topic = Topic.find(params[:topic_id])
-     @post = @topic.posts.build(post_params)
-     @post.user = current_user
+    @topic = Topic.find(params[:topic_id])
+    @post = @topic.posts.build(post_params)
+    @post.user = current_user
 
-     if @post.save
-       flash[:notice] = "Post was saved."
-       redirect_to [@topic, @post]
-     else
-       flash.now[:alert] = "There was an error saving the post. Please try again."
-       render :new
-     end
+    if @post.save
+      flash[:notice] = "Post was saved."
+      redirect_to [@topic, @post]
+    else
+      flash.now[:alert] = "There was an error saving the post. Please try again."
+      render :new
+    end
   end
 
   def edit
@@ -36,11 +36,11 @@ class PostsController < ApplicationController
     @post.assign_attributes(post_params)
 
     if @post.save
-     flash[:notice] = "Post was updated."
-     redirect_to [@post.topic, @post]
+      flash[:notice] = "Post was updated."
+      redirect_to [@post.topic, @post]
     else
-     flash.now[:alert] = "There was an error saving the post. Please try again."
-     render :edit
+      flash.now[:alert] = "There was an error saving the post. Please try again."
+      render :edit
     end
   end
 
@@ -63,18 +63,22 @@ class PostsController < ApplicationController
   end
 
   def authorize_user
-     post = Post.find(params[:id])
+    post = Post.find(params[:id])
 
-     unless current_user == post.user || current_user.admin?
-       flash[:alert] = "You must be an admin to do that."
-       redirect_to [post.topic, post]
-     end
+    unless current_user == post.user || current_user.admin?
+      flash[:alert] = "You must be an admin to do that."
+      puts "Redirect authorize_user"
+      redirect_to [post.topic, post]
+    end
   end
 
-  def authorize_moderator
-    unless current_user.moderator?
-      flash[:alert] = "You must be a moderator to do that"
-      redirect_to topic_post_path
+  def authorize_user_or_is_moderator
+    post = Post.find(params[:id])
+
+    unless current_user == post.user || current_user.admin?|| current_user.moderator?
+      flash[:alert] = "You must be an admin/moderator to do that."
+      puts "Redirect authorize_user"
+      redirect_to [post.topic, post]
     end
   end
 end
