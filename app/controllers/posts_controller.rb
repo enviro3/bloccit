@@ -1,8 +1,8 @@
 class PostsController < ApplicationController
 
   before_action :require_sign_in, except: :show
-  before_action :authorize_user, except: [:show, :new, :create, :edit]
-  before_action :authorize_user_or_is_moderator, only: [ :edit]
+  before_action :authorize_user_or_is_admin, except: [:show, :new, :create, :edit, :update]
+  before_action :authorize_user_or_is_moderator, only: [ :edit, :update]
 
   def show
     @post = Post.find(params[:id])
@@ -46,6 +46,8 @@ class PostsController < ApplicationController
 
   def destroy
     @post = Post.find(params[:id])
+    puts "I'm in destroy"
+    puts @post.title
 
     if @post.destroy
       flash[:notice] = "\"#{@post.title}\" was deleted successfully."
@@ -62,7 +64,8 @@ class PostsController < ApplicationController
     params.require(:post).permit(:title, :body)
   end
 
-  def authorize_user
+
+  def authorize_user_or_is_admin
     post = Post.find(params[:id])
 
     unless current_user == post.user || current_user.admin?

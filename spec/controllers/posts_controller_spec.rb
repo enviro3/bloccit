@@ -210,7 +210,7 @@ RSpec.describe PostsController, type: :controller do
 
     describe "POST create" do
       it "increases the number of posts by 1" do
-        expect{ post :create, topic: {name: RandomData.random_sentence, description: RandomData.random_paragraph} }.to change(Post,:count).by(1)
+        expect{ post :create, topic_id: my_topic.id, post: {title: RandomData.random_sentence, body: RandomData.random_paragraph}}.to change(Post,:count).by(1)
       end
     end
 
@@ -227,46 +227,44 @@ RSpec.describe PostsController, type: :controller do
 
       it "assigns post to be updated to @post" do
         get :edit, topic_id: my_topic.id, id: my_post.id
-        topic_instance = assigns(:post)
+        post_instance = assigns(:post)
 
         expect(post_instance.id).to eq my_post.id
-        expect(post_instance.name).to eq my_post.name
-        expect(post_instance.description).to eq my_post.description
+        expect(post_instance.title).to eq my_post.title
+        expect(post_instance.body).to eq my_post.body
       end
     end
 
     describe "PUT update" do
       it "updates post with expected attributes" do
-        new_name = RandomData.random_sentence
-        new_description = RandomData.random_paragraph
+        new_title = RandomData.random_sentence
+        new_body = RandomData.random_paragraph
 
-        put :update, id: my_post.id, topic: {name: new_name, description: new_description}
+        put :update, topic_id: my_topic.id, id: my_post.id, post: {title: new_title, body: new_body}
 
         updated_post = assigns(:post)
+        puts my_post
+        puts updated_post
         expect(updated_post.id).to eq my_post.id
-        expect(updated_post.name).to eq new_name
-        expect(updated_post.description).to eq new_description
+        expect(updated_post.title).to eq new_title
+        expect(updated_post.body).to eq new_body
       end
 
-      it "redirects to the updated topic" do
-        new_name = RandomData.random_sentence
-        new_description = RandomData.random_paragraph
+      it "redirects to the updated post" do
+        new_title = RandomData.random_sentence
+        new_body = RandomData.random_paragraph
 
-        put :update, id: my_post.id, topic: {name: new_name, description: new_description}
-        expect(response).to redirect_to my_topic
+        put :update, topic_id: my_topic.id, id: my_post.id, post: {title: new_title, body: new_body}
+        expect(response).to redirect_to topic_post_url(my_topic, my_post)
       end
     end
 
     describe "DELETE destroy" do
-      it "deletes the topic" do
+      it "fails to delete the post" do
         delete :destroy, topic_id: my_topic.id, id: my_post.id
         count = Post.where({id: my_post.id}).size
-        expect(count).to eq 0
-      end
 
-      it "redirects to posts index" do
-        delete :destroy, topic_id: my_topic.id, id: my_post.id
-        expect(response).to redirect_to post_path
+        expect(count).to eq 1
       end
     end
   end
