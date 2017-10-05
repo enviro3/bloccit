@@ -279,6 +279,7 @@ RSpec.describe TopicsController, type: :controller do
       user = User.create!(name: "Bloccit User", email: "user@bloccit.com", password: "helloworld", role: :moderator)
       create_session(user)
     end
+
     describe "GET index" do
       it "returns http success" do
         get :index
@@ -311,9 +312,8 @@ RSpec.describe TopicsController, type: :controller do
     describe "GET new" do
       it "returns http success" do
         get :new
-        expect(response).to redirect_to topics_path
+        expect(response).to have_http_status(:success)
       end
-
     end
 
     describe "POST create" do
