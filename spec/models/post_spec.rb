@@ -92,8 +92,5 @@ RSpec.describe Post, type: :model do
     it "is associated with the user that created it" do
       expect(post.votes.first.user).to eq(post.user)
     end
-
-
   end
-
 end
