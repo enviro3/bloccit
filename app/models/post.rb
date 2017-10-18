@@ -12,6 +12,16 @@ class Post < ActiveRecord::Base
   validates :topic, presence: true
   validates :user, presence: true
 
+  after_create :favorite_post_and_user
+
+  def favorite_post_and_user
+    user = self.user
+    post = self
+    favorite = Favorite.new(user: user, post: post)
+    favorite.save!
+    FavoriteMailer.new_post(user, post).deliver_now
+  end
+
   def up_votes
     votes.where(value: 1).count
   end
