@@ -19,6 +19,7 @@ source 'https://rubygems.org'
    gem 'pry-rails'
    gem 'byebug'
    gem 'shoulda'
+   gem 'factory_girl_rails', '~> 4.0' 
  end
 
  # Use SCSS for stylesheets
