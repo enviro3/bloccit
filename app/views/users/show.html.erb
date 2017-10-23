@@ -20,10 +20,9 @@
     </div>
   </div>
 </div>
-
-
+<br><%= user_has_comments %><br>
 <h2>Posts</h2>
-<%= render @user.posts %>
-
+  <%=render @user.posts =>
+<br><%= user_has_posts %><br>
 <h2>Comments</h2>
-<%= render @user.comments %>
+  <%=render @user.comments =>
