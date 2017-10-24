@@ -1,21 +1,26 @@
 module UsersHelper
 
-  def user_has_comments
-    if @user.comments.count >1
-      #<h2>Posts</h2>
-        render @user.posts
-    else
+  def user_has_comments(comments)
+    if comments.empty?
       "#{@user.name} has not submitted any comments yet."
-    end
-  end
-
-  def user_has_posts
-    if @user.posts.count >1
-      #<h2>Comments</h2>
-        render @user.comments
     else
-      "#{@user.name} has not submitted any posts yet."
+      render @user.comments
     end
   end
 
+  def user_has_posts(posts)
+    if posts.empty?
+      "#{@user.name} has not submitted any posts yet."
+    else
+      render @user.posts
+    end
+  end
+
+  def user_has_favorited_posts(favorite_posts)
+    if favorite_posts.empty?
+      "#{@user.name} has not favorited any posts yet."
+    else
+      render @user.favorites
+    end
+  end
 end
