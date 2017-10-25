@@ -5,9 +5,9 @@
 
       <% avatar_url = @user.avatar_url(128) %>
       <% if avatar_url %>
-        <div class="media-left">
-          <%= image_tag avatar_url, class: 'media-object' %>
-        </div>
+      <div class="media-left">
+        <%= image_tag avatar_url, class: 'media-object' %>
+      </div>
       <% end %>
       <div class="media-body">
         <h2 class="media-heading"><%= @user.name %></h2>
@@ -22,9 +22,10 @@
 </div>
 
 <h2>Posts</h2>
-  <%= user_has_posts(@user.posts) %>
+<%= user_has_posts(@user.posts) %>
 <h2>Comments</h2>
-  <%= user_has_comments(@user.comments) %>
+<%= user_has_comments(@user.comments) %>
 <h2>Favorited Posts</h2>
-  <%= render @user.favorites %>
-  this is running
+<% @user.favorite_posts.each do |post| %>
+<%= render partial: 'posts/favorite_post', locals: { post: post } %>
+<% end %>

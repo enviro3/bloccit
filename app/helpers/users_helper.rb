@@ -20,7 +20,7 @@ module UsersHelper
     if favorite_posts.empty?
       "#{@user.name} has not favorited any posts yet."
     else
-      render @user.favorites
+      render favorite.post
     end
   end
 end

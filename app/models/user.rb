@@ -25,8 +25,16 @@ class User < ActiveRecord::Base
     favorites.where(post_id: post.id).first
   end
 
+  def favorite_posts
+    posts = []
+    self.favorites.each do |favorite|
+      posts << favorite.post
+    end
+    posts
+  end
+
   def avatar_url(size)
     gravatar_id = Digest::MD5::hexdigest(self.email).downcase
     "http://gravatar.com/avatar/#{gravatar_id}.png?s=#{size}"
-  end 
+  end
 end
